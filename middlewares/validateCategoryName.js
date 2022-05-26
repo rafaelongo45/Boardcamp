@@ -3,7 +3,7 @@ import chalk from "chalk";
 import connection from "../db.js";
 
 export async function validateCategoryName(req,res, next){
-  const {name} = req.body;
+  const { name } = req.body;
   const categoryName = name.trim()
 
   if(categoryName.length === 0){
@@ -24,7 +24,7 @@ export async function validateCategoryName(req,res, next){
     res.locals.categoryName = categoryName;
     next();
   } catch (e) {
-    console.log(chalk.red.bold('Erro!'));
+    console.log(chalk.red.bold('Erro no servidor!'));
     console.log(e);
     return res.sendStatus(500);
   }
