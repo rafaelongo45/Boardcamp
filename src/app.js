@@ -1,22 +1,18 @@
-import pg from 'pg';
 import cors from 'cors';
 import chalk from 'chalk';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, {json} from 'express';
+
+import categoriesRouter from '../routers/categoriesRouter.js'
 
 dotenv.config()
 
-const { Pool } = pg;
 const app = express();
 
 app.use(cors());
+app.use(json());
 
-const connection = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-
-
+app.use(categoriesRouter);
 
 app.listen(
   process.env.ṔORT || 4000, 
