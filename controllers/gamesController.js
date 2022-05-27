@@ -2,11 +2,24 @@ import chalk from "chalk";
 
 import connection from "../db.js";
 
-//TODO: É preciso ainda usar query string da requisição para filtrar o jogo (islike para o name que ta na req.query);
-//TODO: É preciso devolver o nome da categoria do jogo baseado no id da categoria!
 export async function getGames(req,res){
+  const { name } = req.query;
+  let result = '';
+
   try {
-    const result = await connection.query('SELECT * FROM games');
+    if(name){
+      result = await connection.query(`
+      SELECT games.*, categories.id, categories.name as "categoryName" FROM games 
+      JOIN categories
+      ON games."categoryId" = categories.id
+      WHERE games.name ILIKE $1`, [name + '%']);
+    }else{
+      result = await connection.query(`
+      SELECT games.*, categories.id, categories.name as "categoryName" FROM games 
+      JOIN categories
+      ON games."categoryId" = categories.id`);
+    }
+
     const games = result.rows;
 
     res.send(games)

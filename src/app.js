@@ -5,6 +5,7 @@ import express, {json} from 'express';
 
 import gamesRouter from '../routers/gamesRouter.js';
 import categoriesRouter from '../routers/categoriesRouter.js'
+import customersRouter from '../routers/customersRouter.js';
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(json());
 
 app.use(gamesRouter);
+app.use(customersRouter);
 app.use(categoriesRouter);
 
 app.listen(
