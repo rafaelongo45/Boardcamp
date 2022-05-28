@@ -201,6 +201,7 @@ export async function getRentalsQuery(req,res,next){
     res.locals.queryCommand = queryCommand;
     next();
   } catch (e) {
+    
     console.log(chalk.red.bold('Erro no servidor!'));
     console.log(e);
     return res.sendStatus(500);
