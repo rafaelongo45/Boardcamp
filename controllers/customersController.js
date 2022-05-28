@@ -4,13 +4,14 @@ import connection from "../db.js";
 
 export async function postCustomer(req, res){
   const { name, phone, cpf, birthday } =  req.body;
+  const customerName = name.trim();
 
   try {
     await connection.query(
     `
       INSERT INTO customers (name, phone, cpf, birthday) 
       VALUES ($1, $2, $3, $4)
-    `, [name, phone, cpf, birthday]);
+    `, [customerName, phone, cpf, birthday]);
 
     res.sendStatus(201);
 
@@ -23,15 +24,14 @@ export async function postCustomer(req, res){
 
 export async function getCustomers(req,res){
   const { cpf } = req.query;
-  let result = '';
+  
+  let queryDeclaration = cpf ? 
+  await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1`, [cpf + '%'])
+  : 
+  await connection.query(`SELECT * FROM customers`)
 
   try {
-    if(cpf){
-      result = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1`, [cpf + '%'])
-    }else{
-      result = await connection.query(`SELECT * FROM customers`)
-    }
-
+    const result = queryDeclaration
     const customers = result.rows;
 
     res.send(customers);

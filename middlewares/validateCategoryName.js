@@ -13,6 +13,7 @@ export async function validateCategoryName(req,res, next){
   try {
     const result = await connection.query('SELECT * FROM categories');
     const categories = result.rows;
+    
     const sameName = categories.find(category => {
       return category.name === categoryName
     })

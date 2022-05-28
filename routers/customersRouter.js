@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { validateCustomer } from "../middlewares/validateCustomer.js";
+import { validateCustomerData, isCpfRegistered, validateUniqueCpf } from "../middlewares/validateCustomer.js";
 import { getCustomers, getSpecificCustomer, postCustomer, updateCustomer } from "../controllers/customersController.js";
 
 const customersRouter = Router();
@@ -8,8 +8,8 @@ const customersRouter = Router();
 customersRouter.get('/customers', getCustomers)
 customersRouter.get('/customers/:id', getSpecificCustomer)
 
-customersRouter.post('/customers', validateCustomer, postCustomer)
+customersRouter.post('/customers', validateCustomerData, isCpfRegistered, postCustomer)
 
-customersRouter.put('/customers/:id', validateCustomer, updateCustomer)
+customersRouter.put('/customers/:id', validateCustomerData, validateUniqueCpf, updateCustomer)
 
 export default customersRouter;
