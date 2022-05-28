@@ -5,7 +5,7 @@ import { deleteRental, getRentals, postRental, returnRental } from '../controlle
 
 const rentalsRouter = Router();
 
-rentalsRouter.get('/rentals', getRentals);
+rentalsRouter.get('/rentals', getRentals); //TODO: Checar rota toda
 
 rentalsRouter.post('/rentals', validateIds, postRental);
 rentalsRouter.post('/rentals/:id/return', returnRental);

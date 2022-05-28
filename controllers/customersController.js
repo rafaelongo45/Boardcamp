@@ -23,12 +23,24 @@ export async function postCustomer(req, res){
 }
 
 export async function getCustomers(req,res){
-  const { cpf } = req.query;
-  
-  let queryDeclaration = cpf ? 
-  await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1`, [cpf + '%'])
-  : 
-  await connection.query(`SELECT * FROM customers`)
+  const { cpf, limit, offset } = req.query;
+  let queryDeclaration = await connection.query(`SELECT * FROM customers`);
+
+  if(cpf && limit && offset){
+    queryDeclaration = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 OFFSET $2 LIMIT $3`, [cpf + '%', offset, limit])
+  }else if(cpf && limit){
+    queryDeclaration = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 LIMIT $2`, [cpf + '%', limit])
+  }else if(cpf && offset){
+    queryDeclaration = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 OFFSET $2`, [cpf + '%', offset])
+  }else if(limit && offset){
+    queryDeclaration = await connection.query(`SELECT * FROM customers OFFSET $1 LIMIT $2`, [offset, limit])
+  }else if(cpf){
+    queryDeclaration = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1`, [cpf + '%'])
+  }else if(offset){
+    queryDeclaration = await connection.query(`SELECT * FROM customers OFFSET $1`, [offset])
+  }else if(limit){
+    queryDeclaration = await connection.query(`SELECT * FROM customers LIMIT $1`, [limit])
+  }
 
   try {
     const result = queryDeclaration

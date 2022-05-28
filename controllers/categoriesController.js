@@ -3,8 +3,20 @@ import chalk from 'chalk';
 import connection from '../db.js';
 
 export async function getCategories(req, res){
+  const { offset, limit } = req.query;
+  let queryCommand = await connection.query('SELECT * FROM categories');
+
+  if(offset && limit){
+    queryCommand = await connection.query('SELECT * FROM categories OFFSET $1 LIMIT $2' , [offset, limit])
+  }else if(limit){
+    queryCommand = await connection.query('SELECT * FROM categories LIMIT $1' , [limit])
+  }else if(offset){
+    queryCommand = await connection.query('SELECT * FROM categories OFFSET $1' , [offset])
+  }
+
+
   try {
-    const result = await connection.query('SELECT * FROM categories')
+    const result = queryCommand;
     const categories = result.rows;
 
     return res.status(200).send(categories)
