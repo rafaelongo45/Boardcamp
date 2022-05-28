@@ -9,13 +9,13 @@ export async function getGames(req,res){
   try {
     if(name){
       result = await connection.query(`
-      SELECT games.*, categories.id, categories.name as "categoryName" FROM games 
+      SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
       JOIN categories
       ON games."categoryId" = categories.id
       WHERE games.name ILIKE $1`, [name + '%']);
     }else{
       result = await connection.query(`
-      SELECT games.*, categories.id, categories.name as "categoryName" FROM games 
+      SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
       JOIN categories
       ON games."categoryId" = categories.id`);
     }

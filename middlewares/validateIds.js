@@ -13,11 +13,11 @@ export async function validateIds(req,res,next){
 
     const data = result.rows;
 
-    if(data.length === 0 || data[0].stock <= 0){ //TODO: TA PASSANDO MESMO COM ESSA VERIFICAÇÃO DO STOCK!
+    console.log(data);
+
+    if(data.length === 0 || data[0].stock < 1){
       return res.sendStatus(400)
     }
-
-    console.log(data);
 
     next();
   } catch (e) {

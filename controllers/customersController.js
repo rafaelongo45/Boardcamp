@@ -53,7 +53,7 @@ export async function getSpecificCustomer(req,res){
       return res.sendStatus(404);
     }
 
-    res.send(customer)
+    res.send(customer[0])
   } catch (e) {
     console.log(chalk.red.bold('Erro no servidor!'));
     console.log(e);

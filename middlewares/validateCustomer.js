@@ -8,7 +8,7 @@ export async function validateCustomer(req,res,next){
 
   const cpfRegex = /[0-9]{11}/
   const phoneRegex = /[0-9]{10,11}/
-  const birthdayRegex = /[0-9]{4}\-[0-9]{2}\-[0-9]{2}/ //TODO: Regex mal feita e errada. Refazer depois!
+  const birthdayRegex = /[0-9]{4}\-[0-9]{2}\-[0-9]{2}/ //TODO: Regex mal feita e errada. Refazer depois! Tenta ver com o JOI
 
   const isString = typeof cpf !== 'string' || typeof phone !== 'string' || typeof birthday !== 'string';
   const regexTests = !cpfRegex.test(cpf) || !phoneRegex.test(phone) || !birthdayRegex.test(birthday)
