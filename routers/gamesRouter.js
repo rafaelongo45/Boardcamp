@@ -1,11 +1,12 @@
 import { Router } from "express";
 
-import { validateCategory, validateGame } from "../middlewares/validateGame.js";
+import { getGamesQuery } from "../middlewares/gamesQuery.js";
 import { postGame, getGames } from "../controllers/gamesController.js";
+import { validateCategory, validateGame } from "../middlewares/validateGame.js";
 
-const gamesRouter = Router(); //TODO: Checar rota toda
+const gamesRouter = Router();
 
-gamesRouter.get('/games', getGames);
+gamesRouter.get('/games', getGamesQuery, getGames);
 gamesRouter.post('/games', validateGame, validateCategory, postGame);
 
 export default gamesRouter;

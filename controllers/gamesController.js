@@ -3,65 +3,11 @@ import chalk from "chalk";
 import connection from "../db.js";
 
 export async function getGames(req,res){
-  const { name, offset, limit } = req.query;
-  let queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id`);
-
-  if(name && limit && offset){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    WHERE games.name ILIKE $1
-    OFFSET $2
-    LIMIT $3`, [name + '%', offset, limit]);
-  }else if(name && limit){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    WHERE games.name ILIKE $1
-    LIMIT $2`, [name + '%',limit]);
-  }else if(name && offset){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    WHERE games.name ILIKE $1
-    OFFSET $2`, [name + '%', offset]);
-  }else if(limit && offset){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    OFFSET $1
-    LIMIT $2`, [offset, limit]);
-  }else if(name){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    WHERE games.name ILIKE $1`, [name + '%']);
-  }else if(offset){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    OFFSET $1`, [offset]);
-  }else if(limit){
-    queryCommand = await connection.query(`
-    SELECT games.*, categories.id as "categoryId", categories.name as "categoryName" FROM games 
-    JOIN categories
-    ON games."categoryId" = categories.id
-    LIMIT $1`, [limit]);
-  }
+  const { queryCommand } = res.locals;
 
   try {
-    const result = queryCommand;
-    const games = result.rows;
-
+    const games = queryCommand.rows;
+    
     res.send(games)
   } catch (e) {
     console.log(chalk.red.bold('Erro no servidor!'));
