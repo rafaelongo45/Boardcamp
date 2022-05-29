@@ -3,10 +3,10 @@ import chalk from 'chalk';
 import dotenv from 'dotenv';
 import express, {json} from 'express';
 
-import gamesRouter from '../routers/gamesRouter.js';
-import rentalsRouter from '../routers/rentalsRouter.js';
-import customersRouter from '../routers/customersRouter.js';
-import categoriesRouter from '../routers/categoriesRouter.js'
+import gamesRouter from './routers/gamesRouter.js';
+import rentalsRouter from './routers/rentalsRouter.js';
+import customersRouter from './routers/customersRouter.js';
+import categoriesRouter from './routers/categoriesRouter.js'
 
 dotenv.config()
 
