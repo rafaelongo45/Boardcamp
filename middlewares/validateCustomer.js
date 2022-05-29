@@ -58,8 +58,6 @@ export async function validateUniqueCpf(req,res,next){
       return customer.cpf === cpf;
     })
 
-    console.log(isCpfUnique)
-
     if(isCpfUnique.length > 1){
       return res.sendStatus(409);
     }
