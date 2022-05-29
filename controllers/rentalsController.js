@@ -148,3 +148,15 @@ export async function deleteRental(req,res){
     return res.sendStatus(500);
   }
 }
+
+export async function getRentalMetrics(req,res){ 
+  const { metricsObject } = res.locals;
+
+  try {
+    res.send(metricsObject)
+  } catch (e) {
+    console.log(chalk.red.bold('Erro no servidor!'));
+    console.log(e);
+    return res.sendStatus(500);
+  }
+}
