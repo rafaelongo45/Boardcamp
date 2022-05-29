@@ -10,7 +10,7 @@ const databaseConfig = new Pool({
 });
 
 if(process.env.MODE === "PROD"){
-  connection.ssl = {
+  databaseConfig.ssl = {
     rejectUnauthorized: false
   }
 }
