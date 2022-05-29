@@ -21,6 +21,6 @@ app.use(customersRouter);
 app.use(categoriesRouter);
 
 app.listen(
-  process.env.ṔORT, 
-  () => console.log(chalk.bold.blue(`Servidor rodando na porta ${process.env.PORT}`))
+  process.env.ṔORT || 4000, 
+  console.log(chalk.bold.blue(`Servidor rodando na porta ${process.env.PORT}`))
 )
