@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 const { Pool } = pg;
-const connection = new Pool({
+
+const databaseConfig = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
@@ -13,5 +14,7 @@ if(process.env.MODE === "PROD"){
     rejectUnauthorized: false
   }
 }
+
+const connection = new Pool(databaseConfig)
 
 export default connection;
