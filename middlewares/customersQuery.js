@@ -8,28 +8,62 @@ export async function getCustQuery(req,res,next){
 
   try {
     if(cpf && limit && offset){
-      queryCommand = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 OFFSET $2 LIMIT $3`, [cpf + '%', offset, limit])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      WHERE cpf LIKE $1
+      GROUP BY customers.id 
+      OFFSET $2 LIMIT $3`, [cpf + '%', offset, limit])
 
     }else if(cpf && limit){
-      queryCommand = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 LIMIT $2`, [cpf + '%', limit])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      WHERE cpf LIKE $1
+      GROUP BY customers.id 
+      LIMIT $2`, [cpf + '%', limit])
 
     }else if(cpf && offset){
-      queryCommand = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1 OFFSET $2`, [cpf + '%', offset])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      WHERE cpf LIKE $1
+      GROUP BY customers.id 
+      OFFSET $2`, [cpf + '%', offset])
 
     }else if(limit && offset){
-      queryCommand = await connection.query(`SELECT * FROM customers OFFSET $1 LIMIT $2`, [offset, limit])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      GROUP BY customers.id 
+      OFFSET $1 LIMIT $2`, [offset, limit])
 
     }else if(cpf){
-      queryCommand = await connection.query(`SELECT * FROM customers WHERE cpf LIKE $1`, [cpf + '%'])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      WHERE cpf LIKE $1
+      GROUP BY customers.id  
+      `, [cpf + '%'])
 
     }else if(offset){
-      queryCommand = await connection.query(`SELECT * FROM customers OFFSET $1`, [offset])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      GROUP BY customers.id OFFSET $1`, [offset])
 
     }else if(limit){
-      queryCommand = await connection.query(`SELECT * FROM customers LIMIT $1`, [limit])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      GROUP BY customers.id LIMIT $1`, [limit])
       
     }else{
-      queryCommand = await connection.query(`SELECT * FROM customers`);
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
+      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
+      FROM customers, rentals
+      GROUP BY customers.id
+      `);
     }
 
     res.locals.queryCommand = queryCommand;
