@@ -8,7 +8,7 @@ import rentalsRouter from './routers/rentalsRouter.js';
 import customersRouter from './routers/customersRouter.js';
 import categoriesRouter from './routers/categoriesRouter.js'
 
-dotenv.config()
+dotenv.config();
 
 const app = express();
 
@@ -20,5 +20,5 @@ app.use(rentalsRouter);
 app.use(customersRouter);
 app.use(categoriesRouter);
 
-app.listen( process.env.ṔORT || 4000, () => console.log(chalk.bold.blue(`Servidor rodando na porta ${process.env.PORT}`))
+app.listen(process.env.ṔORT || 4000, () => console.log(chalk.bold.blue(`Servidor rodando na porta ${process.env.PORT}`))
 )
