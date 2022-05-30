@@ -11,14 +11,16 @@ import categoriesRouter from './routers/categoriesRouter.js'
 dotenv.config();
 
 const app = express();
+const router = express.Router();
 
 app.use(cors());
 app.use(json());
+app.use(router);
 
-app.use(gamesRouter);
-app.use(rentalsRouter);
-app.use(customersRouter);
-app.use(categoriesRouter);
+router.use(gamesRouter);
+router.use(rentalsRouter);
+router.use(customersRouter);
+router.use(categoriesRouter);
 
 app.listen(
   process.env.ṔORT || 4000, 
