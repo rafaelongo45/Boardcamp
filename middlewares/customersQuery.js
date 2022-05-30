@@ -8,60 +8,62 @@ export async function getCustQuery(req,res,next){
 
   try {
     if(cpf && limit && offset){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
       WHERE cpf LIKE $1
       GROUP BY customers.id 
       OFFSET $2 LIMIT $3`, [cpf + '%', offset, limit])
 
     }else if(cpf && limit){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
       WHERE cpf LIKE $1
       GROUP BY customers.id 
       LIMIT $2`, [cpf + '%', limit])
 
     }else if(cpf && offset){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
       WHERE cpf LIKE $1
       GROUP BY customers.id 
       OFFSET $2`, [cpf + '%', offset])
 
     }else if(limit && offset){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
-      GROUP BY customers.id 
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
+      GROUP BY customers.id
       OFFSET $1 LIMIT $2`, [offset, limit])
 
     }else if(cpf){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
       WHERE cpf LIKE $1
       GROUP BY customers.id  
       `, [cpf + '%'])
 
     }else if(offset){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
-      GROUP BY customers.id OFFSET $1`, [offset])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
+      GROUP BY customers.id
+      OFFSET $1`, [offset])
 
     }else if(limit){
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
-      GROUP BY customers.id LIMIT $1`, [limit])
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
+      GROUP BY customers.id 
+      LIMIT $1`, [limit])
       
     }else{
-      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") 
-      FILTER (WHERE rentals."customerId" = customers.id) AS "rentalsCount"
-      FROM customers, rentals
+      queryCommand = await connection.query(`SELECT customers.*, COUNT (rentals."customerId") AS "rentalsCount"
+      FROM customers
+      LEFT JOIN rentals ON rentals."customerId" = customers.id 
       GROUP BY customers.id
       `);
     }
